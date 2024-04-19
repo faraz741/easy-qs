@@ -1,0 +1,156 @@
+<body>
+  <section class="ct_login_main_div">
+    <div class="container-fluid px-0">
+      <div class="ct_login_left_bg">
+        <div class="row align-items-center">
+          <div class="col-lg-6 mb-4 mb-md-0">
+            <div class="ct_left_login_img">
+              <img src="assets/img/Business Plan-amico 1.svg" alt="img">
+            </div>
+          </div>
+          <div class="col-lg-4 offset-0 offset-lg-1  mb-4 mb-lg-0">
+            <div class="ct_login_right_form w-60 mx-auto mx-lg-0">
+
+              <div class="ct_login_logo mx-auto d-block text-center mb-4">
+                <img src="assets/img/Logo.png" alt="">
+              </div>
+              <div class="mb-5 text-center">
+                <h4 class="ct_fs_28 mb-2">Create an account for business</h4>
+                <p class="mb-0">See what is going on with your business</p>
+              </div>
+              <form [formGroup]="signupForm" (ngSubmit)="onSubmit()">
+                <div class="row">
+                  <div class="col-md-6">
+                    <div class="ct_input-group mb-4">
+                      <input required="" type="text" name="text" autocomplete="off" formControlName="firstname"
+                        class="ct_input">
+                      <label class="ct_user-label">First Name <span class="ct_required_star">*</span></label>
+                      <div *ngIf="signupForm.controls['firstname'].invalid && signupForm.controls['firstname'].touched"
+                        class="error-message">
+                        <div *ngIf="signupForm.controls['firstname'].errors?.['required']">Name is required.</div>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="col-md-6">
+                    <div class="ct_input-group mb-4">
+                      <input required="" type="text" name="text" autocomplete="off" formControlName="lastname"
+                        class="ct_input">
+                      <label class="ct_user-label">Last Name <span class="ct_required_star">*</span></label>
+                      <div *ngIf="signupForm.controls['lastname'].invalid && signupForm.controls['lastname'].touched"
+                        class="error-message">
+                        <div *ngIf="signupForm.controls['lastname'].errors?.['required']">Last name is required.</div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="ct_input-group mb-4">
+                  <input required="" type="text" name="text" autocomplete="off" formControlName="company"
+                    class="ct_input">
+                  <label class="ct_user-label">Company Name <span class="ct_required_star">*</span></label>
+                  <div *ngIf="signupForm.controls['company'].invalid && signupForm.controls['company'].touched"
+                    class="error-message">
+                    <div *ngIf="signupForm.controls['company'].errors?.['required']">Company name is required.</div>
+                  </div>
+                </div>
+                <div class="ct_input-group mb-4">
+                  <input required="" type="email" name="text" autocomplete="off" formControlName="email"
+                    class="ct_input">
+                  <label class="ct_user-label">Email <span class="ct_required_star">*</span></label>
+                  <div *ngIf="signupForm.controls['email'].invalid && signupForm.controls['email'].touched"
+                    class="error-message">
+                    <div *ngIf="signupForm.controls['email'].errors?.['required']">Email is required.</div>
+                    <div
+                      *ngIf="signupForm.controls['email'].errors?.['email'] && !signupForm.controls['email'].errors?.['required']">
+                      Invalid email format.</div>
+                  </div>
+                </div>
+                <!-- <div class="ct_input-group mb-4 position-relative">
+                  <input required="" type="password" name="text" autocomplete="off" formControlName="password"
+                    class="ct_input">
+                  <label class="ct_user-label">Password <span class="ct_required_star">*</span></label>
+                  <i class="fa-regular fa-eye ct_hide_pass_wye"></i>
+                  <div *ngIf="signupForm.controls['password'].invalid && signupForm.controls['password'].touched"
+                    class="error-message">
+                    <div *ngIf="signupForm.controls['password'].errors?.['required']">Password is required.</div>
+                  </div>
+                </div> -->
+
+                <div class="ct_input-group mb-4 position-relative">
+                  <input required type="{{ isPasswordVisible ? 'text' : 'password' }}" name="text" autocomplete="off"
+                    formControlName="password" class="ct_input">
+                  <label class="ct_user-label">Password <span class="ct_required_star">*</span></label>
+                  <i class="fa-regular ct_hide_pass_wye" [ngClass]="isPasswordVisible ? 'fa-eye' : 'fa-eye-slash' "
+                    (click)="togglePasswordVisibility()"></i>
+                  <div *ngIf="signupForm.controls['password'].invalid && signupForm.controls['password'].touched"
+                    class="error-message">
+                    <div *ngIf="signupForm.controls['password'].errors?.['required']">Password is required.</div>
+                  </div>
+                </div>
+
+                <div class="ct_input-group mb-4 position-relative">
+                  <input required="" type="password" name="text" autocomplete="off" formControlName="confirmPassword"
+                    class="ct_input">
+                  <label class="ct_user-label">Confirm Password <span class="ct_required_star">*</span></label>
+                  <i class="fa-regular fa-eye-slash ct_hide_pass_wye"></i>
+                  <div
+                    *ngIf="signupForm.controls['confirmPassword'].invalid && signupForm.controls['confirmPassword'].touched"
+                    class="error-message">
+                    <div *ngIf="signupForm.controls['confirmPassword'].errors?.['required']">Confirm password is
+                      required.
+                    </div>
+                    <div *ngIf="passwordMismatch && !signupForm.controls['confirmPassword'].errors?.['required']">
+                      Passwords do not match.</div>
+                  </div>
+                </div>
+
+                <!-- <div class="ct_remember_text mb-3"> -->
+                <div class="mb-1">
+                  <!-- <div class="d-flex align-items-center gap-2">
+                                   <input type="checkbox" class="ct_checkbox" id="remember">
+                                  <label for="remember"> Remember Me </label>
+                                </div> -->
+                  <div class="ct_checkbox_main ">
+                    <div>
+                      <input type="checkbox" id="ct_checkbox_cbx1" formControlName="age" class="ct_hidden-xs-up">
+                      <label for="ct_checkbox_cbx1" class="ct_checkbox_cbx"></label>
+                    </div>
+                    <p class="mb-0">I agree that I am over 13 years of age</p>
+                  </div>
+                  <div *ngIf="signupForm.get('age')?.value === false" class="error-message">
+                    Please confirm your age.
+                  </div>
+                </div>
+                <div class="">
+                  <div class="ct_checkbox_main align-items-start">
+                    <div>
+                      <input type="checkbox" id="ct_checkbox_cbx" formControlName="condition" class="ct_hidden-xs-up">
+                      <label for="ct_checkbox_cbx" class="ct_checkbox_cbx"></label>
+                    </div>
+                    <p class="mb-0">I am a company that gives permission to create a project account for and for EasyQS
+                      to collect, use and disclose the information about my as set forth in the Terms of Use and Privacy
+                      Policy.</p>
+                  </div>
+                  <div *ngIf="signupForm.get('condition')?.value === false" class="error-message">
+                    Please check this field.
+                  </div>
+                </div>
+
+                <div class="mt-4">
+                  <button class="ct_custom_btm">
+                    <span class="circle1"></span>
+                    <span class="circle2"></span>
+                    <span class="circle3"></span>
+                    <span class="circle4"></span>
+                    <span class="circle5"></span>
+                    <span class="text">Sign Up</span>
+                  </button>
+                </div>
+                <p class="mb-0 mt-3 ct_login_btm">Already have an account? <a routerLink="/home/login">Login</a></p>
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+</body>

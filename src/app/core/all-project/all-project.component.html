@@ -1,0 +1,71 @@
+<body style="background-color: #E8DFDA;">
+    <div class="ct_dashbaord_bg" style="height: 100vh;">
+        <div class="ct_dashboard_head pb-3 gap-3 ct_mob_responsive_wrap">
+            <div class="ct_side_logo ">
+                <img src="assets/img/Logo.png" alt="" style="width: 140px;">
+            </div>
+            <div class="me-auto ms-5 d-none d-md-block">
+                <h5 class="mb-0">All Projects</h5>
+            </div>
+
+            <div class="d-flex align-items-center gap-3 ">
+                <div class="position-relative ct_search_input">
+                    <input type="text" [(ngModel)]="searchTerm" class="form-control ct_flex_1" placeholder="Search"
+                        style="height: 48px;">
+                </div>
+                <button class="ct_logout_btn ct_white_btn" (click)="logout()">
+                    <div class="ct_user_name_info">
+                        <h6>{{userName}}</h6>
+                        <p class="mb-0">Prodcut manager</p>
+                    </div>
+                    <i class="fa-solid fa-power-off"></i>
+                </button>
+            </div>
+        </div>
+
+        <div class="mt-5">
+            <div class="container">
+                <h4 class="mb-4"><strong>Choose Project</strong></h4>
+                <div class="row">
+                    <div class="col-lg-4 col-md-6 mb-4 mb-lg-0">
+                        <div class="ct_white_bg_1 py-5" data-bs-toggle="modal" data-bs-target="#ct_create_project">
+                            <i class="fa-solid fa-plus"></i>
+                            <h4>Add Project</h4>
+                        </div>
+                    </div>
+
+                    <div class="col-lg-4 col-md-6 mb-4" style="cursor: pointer;"
+                        *ngFor="let project of projects | filter: searchTerm"
+                        (click)="navigateToProjectDetails(project)">
+                        <div class="ct_white_bg_1">
+                            <div class="ct_grid_between">
+                                <div class="d-flex justify-content-between">
+                                    <div class="ct_add_info">
+                                        <h4 class="text-start mb-1">{{ project.name }}</h4>
+                                        <p class="mb-0">Start Date - {{ project.start_date }}</p>
+                                    </div>
+                                    <!-- <div class="ct_right_side_icons">
+                                <img src="assets/img/{{ project.status }}_icon.svg" alt="">
+                              </div> -->
+                                </div>
+                                <div class="ct_project_address">
+                                    <p class="mb-1">Address - </p>
+                                    <p class="mb-0">{{ project.address }}</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade Committed_Price" id="ct_create_project" tabindex="-1"
+        aria-labelledby="ct_create_projectLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg modal-dialog-centered">
+            <div class="modal-content">
+                <app-new-project-modal></app-new-project-modal>
+            </div>
+        </div>
+    </div>
+</body>

@@ -1,0 +1,95 @@
+<form [formGroup]="newForm" (ngSubmit)="onSubmit()">
+    <div class="modal-body">
+        <div class="pt-5">
+            <h4 class="mb-4 text-center"><strong>Create a Project</strong></h4>
+            <!-- <form [formGroup]="newForm"> -->
+            <div class="form-group mb-3">
+                <label for="" class="mb-1"><strong>Project Name </strong><span class="ct_required_star">*</span></label>
+                <input type="text" class="form-control" formControlName="project_name">
+                <div *ngIf="newForm.controls['project_name'].invalid && newForm.controls['project_name'].touched"
+                    class="error-message">
+                    <div *ngIf="newForm.controls['project_name'].errors?.['required']">Project name is required.</div>
+                </div>
+            </div>
+            <div class="form-group mb-3">
+                <label for="" class="mb-1"><strong>Project Address</strong> <span
+                        class="ct_required_star">*</span></label>
+                <input type="text" class="form-control" formControlName="project_address">
+                <div *ngIf="newForm.controls['project_address'].invalid && newForm.controls['project_address'].touched"
+                    class="error-message">
+                    <div *ngIf="newForm.controls['project_address'].errors?.['required']">Project address is required.
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-6 mb-3">
+                    <div class="form-group mb-3">
+                        <label for="" class="mb-1"><strong>Project Start Date </strong><span
+                                class="ct_required_star">*</span></label>
+                        <input type="date" class="form-control" formControlName="project_startdate">
+                        <div *ngIf="newForm.controls['project_startdate'].invalid && newForm.controls['project_startdate'].touched"
+                            class="error-message">
+                            <div *ngIf="newForm.controls['project_startdate'].errors?.['required']">Start date is
+                                required.
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6 mb-3">
+                    <div class="form-group mb-3">
+                        <label for="" class="mb-1"><strong>Project Anticipated Completion Date</strong> <span
+                                class="ct_required_star">*</span></label>
+                        <input type="date" class="form-control" formControlName="project_completiondate">
+                        <div *ngIf="newForm.controls['project_completiondate'].invalid && newForm.controls['project_completiondate'].touched"
+                            class="error-message">
+                            <div *ngIf="newForm.controls['project_completiondate'].errors?.['required']">Completion date
+                                is
+                                required.</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- <div class="col-md-6 mb-3">
+                    <div class="form-group mb-3">
+                        <label for="" class="mb-1"><strong>Project Start Date </strong><span
+                                class="ct_required_star">*</span></label>
+                        <input type="date" class="form-control" formControlName="project_startdate">
+                        <div *ngIf="newForm.controls['project_startdate'].invalid && newForm.controls['project_startdate'].touched"
+                            class="error-message">
+                            <div *ngIf="newForm.controls['project_startdate'].errors?.['required']">Start date is
+                                required.</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6 mb-3">
+                    <div class="form-group mb-3">
+                        <label for="" class="mb-1"><strong>Project Anticipated Completion Date</strong> <span
+                                class="ct_required_star">*</span></label>
+                        <input type="date" class="form-control" formControlName="project_completiondate"
+                            [disabled]="isEndDateDisabled()">
+                        <div *ngIf="newForm.controls['project_completiondate'].invalid && newForm.controls['project_completiondate'].touched"
+                            class="error-message">
+                            <div *ngIf="newForm.controls['project_completiondate'].errors?.['required']">Completion date
+                                is
+                                required.</div>
+                            <div *ngIf="newForm.controls['project_completiondate'].errors?.['endDateAfterStartDateValidator']">
+                                Completion date must be after start date.</div>
+                        </div>
+                    </div>
+                </div> -->
+
+
+            </div>
+
+
+
+            <!-- </form> -->
+        </div>
+    </div>
+    <div class="modal-footer justify-content-center border-0">
+        <a> <button type="submit"
+                class="ct_custom_btm ct_border_radius_0 ct_btn_fit ct_news_ltr_btn ct_modal_submit">Create New
+                Project</button></a>
+        <button hidden type="button" class="btn btn-secondary" #closeModal data-bs-dismiss="modal">Close</button>
+    </div>
+</form>

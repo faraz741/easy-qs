@@ -1,0 +1,5 @@
+.active {
+    background-color: #ebdede; /* Example highlight color */
+    color: #fff; /* Example text color */
+    border-radius: 20px;
+}

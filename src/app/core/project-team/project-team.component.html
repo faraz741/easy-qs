@@ -1,0 +1,120 @@
+<div class="ct_dashbaord_middle">
+    <div class="">
+        <div class="d-flex align-items-center justify-content-between ct_responsive_wrap">
+            <h4 class="mb-0 ct_fs_22">Project Team</h4>
+            <div class="d-flex align-items-center gap-4">
+                <div class="position-relative ct_search_input">
+                    <input type="text" class="form-control ct_flex_1" placeholder="Search">
+                    <i class="fa-solid fa-magnifying-glass "></i>
+                </div>
+                <button class="ct_custom_btm ct_border_radius_0 ct_btn_fit ct_news_ltr_btn ct_add_item"
+                    data-bs-toggle="modal" data-bs-target="#ct_supplier_detail">Add Team Member</button>
+            </div>
+        </div>
+    </div>
+
+    <div class="table-responsive mt-3">
+        <table class="table ct_project_table ct_custom_table_main">
+            <thead>
+                <tr>
+                    <th>S No.</th>
+                    <th>Name</th>
+                    <th>Job Role</th>
+                    <!-- <th>E-mail Address </th> -->
+                    <th>Contact no.</th>
+                    <th>City</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor="let row of data | filter:searchQuery; let i = index">
+                    <td>{{i+1}}</td>
+                    <td>{{row.name}}</td>
+                    <td>{{row.description}}</td>
+                    <!-- <td><a href="javascript:void(0)">BuildMasterslnc@buildmasterinc.co.uk</a></td> -->
+                    <td>{{row.contact}}</td>
+                    <td class="text-end">{{row.city}}</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<div class="modal fade Committed_Price" id="ct_supplier_detail" tabindex="-1" aria-labelledby="ct_supplier_detailLabel"
+    aria-hidden="true">
+    <div class="modal-dialog modal-lg modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-body">
+                <div class="pt-5">
+                    <h4 class="mb-4 text-center"><strong>Add Team Member</strong></h4>
+                    <form [formGroup]="newForm" (ngSubmit)="onSubmit()">
+                        <div class="form-group mb-3">
+                            <label for="" class="mb-1"><strong>Name </strong><span
+                                    class="ct_required_star">*</span></label>
+                            <input type="text" class="form-control" placeholder="Enter name here..."
+                                formControlName="name">
+                            <div *ngIf="newForm.controls['name'].invalid && newForm.controls['name'].touched"
+                                class="error-message">
+                                <div *ngIf="newForm.controls['name'].errors?.['required']">Name is
+                                    required.
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group mb-3">
+                            <label for="" class="mb-1"><strong>Job Role</strong> <span
+                                    class="ct_required_star">*</span></label>
+                            <input type="text" class="form-control" placeholder="Enter job role here..."
+                                formControlName="job_role">
+                            <div *ngIf="newForm.controls['job_role'].invalid && newForm.controls['job_role'].touched"
+                                class="error-message">
+                                <div *ngIf="newForm.controls['job_role'].errors?.['required']">Job role is
+                                    required.
+                                </div>
+                            </div>
+                        </div>
+
+
+                        <!-- <div class="form-group mb-3">
+                    <label for="" class="mb-1"><strong>Email Address </strong><span class="ct_required_star">*</span></label>
+                    <input type="email" class="form-control">
+                    </div> -->
+
+                        <div class="form-group mb-3">
+                            <label for="" class="mb-1"><strong>Contact No.</strong> <span
+                                    class="ct_required_star">*</span></label>
+                            <input type="number" class="form-control" formControlName="contact_no"
+                                placeholder="Enter number here...">
+                            <div *ngIf="newForm.controls['contact_no'].invalid && newForm.controls['contact_no'].touched"
+                                class="error-message">
+                                <div *ngIf="newForm.controls['contact_no'].errors?.['required']">Contact is
+                                    required.</div>
+                            </div>
+                        </div>
+                        <div class="form-group mb-3">
+                            <label for="" class="mb-1"><strong>City</strong> <span
+                                    class="ct_required_star">*</span></label>
+                            <input type="text" class="form-control" formControlName="city"
+                                placeholder="Enter city here...">
+                            <div *ngIf="newForm.controls['city'].invalid && newForm.controls['city'].touched"
+                                class="error-message">
+                                <div *ngIf="newForm.controls['city'].errors?.['required']">City is required.
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="modal-footer justify-content-center border-0">
+                            <button type="button" class="ct_outline_btn ct_outline_orange"
+                                data-bs-dismiss="modal">Cancel</button>
+                            <button type="button ct_"
+                                class="ct_custom_btm ct_border_radius_0 ct_btn_fit ct_news_ltr_btn ct_modal_submit">Add
+                                Supplier</button>
+                            <button hidden type="button" class="btn btn-secondary" #closeModal
+                                data-bs-dismiss="modal">Close</button>
+                        </div>
+
+                    </form>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>

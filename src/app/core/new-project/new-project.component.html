@@ -1,0 +1,52 @@
+<body>
+  <div class="ct_dashbaord_bg" style="height: 100vh;">
+    <div class="ct_dashboard_head pb-3">
+      <div class="ct_side_logo ">
+        <img src="assets/img/Logo.png" alt="" style="width: 140px;">
+      </div>
+      <div>
+        <button class="ct_logout_btn ct_white_btn" (click)="logout()">
+          <div class="ct_user_name_info">
+            <h6>{{userName}}</h6>
+            <p class="mb-0">Prodcut manager</p>
+          </div>
+          <i class="fa-solid fa-power-off"></i>
+        </button>
+      </div>
+    </div>
+    <div class="ct_position_center" style="overflow: hidden; background-color: #E8DFDA;">
+      <div class="container-fluid">
+        <div class="row align-items-center">
+          <div class="col-lg-6 mb-4 mb-lg-0">
+            <div class="ct_computer_img">
+              <img src="assets/img/computer_img.png" alt="">
+            </div>
+          </div>
+          <div class="col-lg-6 mb-4 mb-lg-0">
+            <div class="ct_new_project_cnt">
+              <h1 class="ct_fs_35"><strong>Welcome to EasyQS</strong></h1>
+              <p class="ct_fw_600">Tools for financial management , improving
+                work quality,<br> and growing your business</p>
+              <button class="ct_custom_btm ct_border_radius_0 ct_btn_fit ct_news_ltr_btn ct_add_item mt-5"
+                data-bs-toggle="modal" data-bs-target="#ct_create_project">Create a project</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- approvel_cos modal S -->
+
+  <div class="modal fade Committed_Price" #myModal id="ct_create_project" tabindex="-1"
+    aria-labelledby="ct_create_projectLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg modal-dialog-centered">
+      <div class="modal-content">
+        <app-new-project-modal></app-new-project-modal>
+      </div>
+    </div>
+  </div>
+
+  <!-- approvel_cos modal E -->
+
+</body>

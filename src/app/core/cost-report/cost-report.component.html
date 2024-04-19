@@ -1,0 +1,367 @@
+<div class="ct_dashbaord_bg">
+    <div class="ct_dashbaord_main ct_active">
+        <div class="ct_dashbaord_middle">
+            <div class="ct_light_white_bg_clr p-3 mb-3">
+                <div class="d-flex align-items-center gap-2 justify-content-between  ct_responsive_wrap">
+                    <p class="mb-0 ct_fs_14">Start Date - <strong>{{pStartDate | date:'yyyy-MM-dd'}}</strong></p>
+                    <p class="mb-0 ct_fs_14">Project Anticipated Completion Date - <strong>{{pEndDate |
+                            date:'yyyy-MM-dd'}}</strong></p>
+                </div>
+            </div>
+            <div class="ct_dark_grey_bg">
+                <div class="ct_btn_group">
+                    <button class="ct_white_btn w-100" data-bs-toggle="modal" data-bs-target="#Committed_Price">Add
+                        Committed Price </button>
+                    <button class="ct_white_btn w-100" data-bs-toggle="modal" data-bs-target="#approvel_cos">Add
+                        Approved CO’s</button>
+                </div>
+            </div>
+            <div class=" mt-4">
+                <h4 class="mb-0 ct_fs_22">Schedule of Costs</h4>
+                <div class="mt-3">
+                    <form #myForm="ngForm" (ngSubmit)="addItem(myForm)">
+                        <label for="" class="mb-1">Commodity Item </label>
+                        <div class="d-flex align-items-center gap-4">
+                            <input type="text" name="inputField" ngModel required=""
+                                class="form-control ct_w_50_res  w-25" placeholder="Enter commodity name...">
+                            <button type="submit"
+                                class="ct_custom_btm ct_border_radius_0 ct_btn_fit ct_news_ltr_btn ct_add_item">Add
+                                Item</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+            <div class="table-responsive mt-3">
+                <table class="table ct_project_table ct_custom_table_main">
+                    <thead>
+                        <tr>
+                            <th>Items</th>
+                            <th>Tender Price</th>
+                            <th>Committed Price </th>
+                            <th>Budget Costs</th>
+                            <th>Approved CO’s</th>
+                            <th class="ct_project_table thead tr th:last-child">Total Cost</th>
+                            <th>Action</th>
+                            <th>Incurred Costs</th>
+                            <th>Cost to go</th>
+                        </tr>
+                    </thead>
+
+                    <tbody>
+                        <tr *ngFor="let product of data; let i = index">
+                            <ng-container *ngIf="editableRowIndex !== product.id; else editMode">
+                                <td>{{ product.item_name }}</td>
+                                <td>
+                                    {{ product.tender_price | currency }}
+                                </td>
+                                <td>{{ product.commited_price | currency }}</td>
+                                <td>
+                                    {{ product.budget_costs | currency }}
+                                </td>
+                                <td>{{ product.approved_co | currency }}</td>
+                                <td>{{ product.total_cost | currency }}</td>
+                                <td>
+                                    <div class="ct_edit_icon" style="cursor: pointer;"
+                                        (click)="toggleEditMode1(product.id)">
+                                        <i class="fa-solid fa-pencil"></i>
+                                    </div>
+                                </td>
+
+                                <td>0.00</td>
+                                <td>0.00</td>
+
+                            </ng-container>
+                            <ng-template #editMode>
+                                <td>{{ product.item_name }}</td>
+                                <td>
+                                    <input type="text" style="width: 80%;" [(ngModel)]="product.tender_price"
+                                        class="ct_currency_input ct_input_indent_0"
+                                        (ngModelChange)="tenderPriceChanged = true;">
+                                </td>
+                                <td>
+                                    {{ product.commited_price | currency }}
+                                </td>
+                                <td>
+                                    <input type="text" style="width: 75%;" [(ngModel)]="product.budget_costs"
+                                        class="ct_currency_input ct_input_indent_0"
+                                        (ngModelChange)="budgetCostsChanged = true;">
+                                </td>
+                                <td>{{ product.approved_co | currency }}</td>
+                                <td>{{ product.total_cost | currency }}</td>
+                                <td>
+                                    <div class="ct_edit_icon" style="cursor: pointer;"
+                                        (click)="sendDataThroughApi(product)">
+                                        <i class="fa-solid fa-check"></i>
+                                    </div>
+                                </td>
+                                <td>0.00</td>
+                                <td>0.00</td>
+                            </ng-template>
+                        </tr>
+
+                        <tr style="background-color: transparent;">
+
+                            <td class="text-left" style="background-color: unset;"><strong>Total Price</strong></td>
+                            <td class="text-left" style="background-color: unset;"><strong>{{ calculateTenderPrice() |
+                                    currency:'GBP':'symbol' }}</strong></td>
+                            <td class="text-left" style="background-color: unset;"><strong>{{ calculateCommittedPrice()
+                                    |
+                                    currency:'GBP':'symbol' }}</strong></td>
+                            <td class="text-left" style="background-color: unset;"><strong>{{ calculateBudgetCosts() |
+                                    currency:'GBP':'symbol' }}</strong></td>
+                            <td class="text-left" style="background-color: unset;"><strong>{{ calculateApprovedCOst() |
+                                    currency:'GBP':'symbol' }}</strong></td>
+                            <!-- <td colspan="2" class="text-left" style="background-color: unset;"><strong>{{ calculateTotalCost() |
+                                    currency:'GBP':'symbol' }}</strong></td> -->
+                            <td colspan="2" class="text-left" style="background-color: unset;"><strong>{{ itemTotalCost
+                                    |
+                                    currency:'GBP':'symbol' }}</strong></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade Committed_Price" id="Committed_Price" tabindex="-1" aria-labelledby="Committed_PriceLabel"
+    aria-hidden="true">
+    <div class="modal-dialog modal-lg modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-body">
+                <div class="pt-5">
+                    <h4 class="mb-4 text-center"><strong>Add Purchase Order</strong></h4>
+                    <form [formGroup]="committedForm">
+                        <div class="ct_purchase_form">
+                            <div class="form-group mb-3 px-2">
+                                <label for="" class="mb-1">Paid to <span class="ct_required_star">*</span></label>
+                                <select formControlName="supplyValue" name="" id=""
+                                    class="ct_purchase_select ct_bg_grey_select">
+                                    <option selected value="0">Select Chain</option>
+                                    <option *ngFor="let option of dropdownOptionsCmt;" [value]="option.id">
+                                        {{option.name}}</option>
+                                </select>
+
+                                <!-- <div *ngIf="committedForm.controls['supplyValue'].invalid && committedForm.controls['supplyValue']?.touched"
+                                    class="text-danger">
+                                    Please select a chain.
+                                </div> -->
+
+                            </div>
+                            <div class="ct_multiple_purchase_line">
+                                <table #tableRef class="table mb-0">
+                                    <tr *ngFor="let row of committedLines; let i = index">
+                                        <td class="px-2" style="width: 60%;">
+                                            <!-- Select Dropdown -->
+                                            <select id="dropdown{{i}}" class="ct_purchase_select"
+                                                [ngModelOptions]="{standalone: true}" [(ngModel)]="row.selectedOption">
+                                                <option selected value="0">Select Item</option>
+                                                <option *ngFor="let option of itemsDropdown" [ngValue]="option">{{
+                                                    option.item_name }}</option>
+                                            </select>
+                                            <!-- <div *ngIf="committedForm.controls['selectedItem'].invalid && committedForm.controls['selectedItem']?.touched"
+                                                class="text-danger">
+                                                Please select an item.
+                                            </div> -->
+                                        </td>
+                                        <td class="px-2">
+                                            <!-- Input Field for Price -->
+                                            <div class="position-relative">
+                                                <input id="inputField{{i}}" type="text"
+                                                    placeholder="Enter price here..." [(ngModel)]="row.inputPrice"
+                                                    class="ct_currency_input" [ngModelOptions]="{standalone: true}">
+                                                <span id="inputField{{i}}" class="ct_usd_icon">£</span>
+                                                <!-- <div *ngIf="committedForm.controls['inputPrice'].invalid && committedForm.controls['inputPrice']?.touched" class="text-danger">
+                                                    Please enter a valid price.
+                                                  </div> -->
+                                            </div>
+                                        </td>
+                                        <td class="px-2">
+                                            <!-- Remove Button -->
+                                            <i class="fa-solid fa-trash ct_trash" (click)="removeCommittedRow(i)"></i>
+                                        </td>
+                                    </tr>
+                                </table>
+                            </div>
+
+                            <div class="text-center">
+                                <p class="ct_orange_text">
+                                    <strong>
+                                        <button class="btndis" (click)="addCommittedRow()"><u>+ Add Line</u></button>
+                                    </strong>
+                                </p>
+                            </div>
+
+                            <div class="d-flex align-items-center gap-3 justify-content-between mb-4">
+                                <p class="mb-0"><strong>Total Amount</strong></p>
+                                <p class="mb-0" style="margin-right: 10px;"><strong>£ {{totalAmount}}</strong></p>
+                            </div>
+
+                            <div class="form-group mb-3">
+                                <label for="" class="ct_fs_16 mb-1">Memo</label>
+                                <textarea rows="3" formControlName="memo" placeholder="Type the memo here...."
+                                    class="ct_text_area"></textarea>
+                                <div *ngIf="committedForm.controls['memo']?.invalid && committedForm.controls['memo']?.touched"
+                                    class="text-danger">
+                                    Please enter a memo.
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="ct_file_upload1" class="ct_file_upload">
+                                    <input #exampleInputFile formControlName="sourceFile"
+                                        (change)="handleCommittedFileInput($event)" type="file" id="ct_file_upload1"
+                                        class="d-none">
+                                    <span><i class="fa-solid fa-paperclip"></i> Add Attachment</span>
+                                </label>
+
+                                <div *ngIf="committedForm.controls['sourceFile']?.invalid && committedForm.controls['sourceFile']?.touched"
+                                    class="text-danger">
+                                    Please choose a file.
+                                </div>
+
+                            </div>
+
+                            <div class="mt-4 d-flex align-items-center justify-content-between flex-wrap gap-2">
+                                <div class="d-flex align-items-center gap-3">
+                                    <img src="assets/img/file_doc.svg" alt="" class="ct_uploaded_img">
+                                    <div class="ct_file_name">
+                                        <h6>{{committedfilename}}</h6>
+                                        <small>{{ committedfilesize }}</small>
+                                    </div>
+                                </div>
+                                <div class="ct_green_check">
+                                    <i class="fa-solid fa-check"></i>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="modal-footer justify-content-center border-0 mt-4">
+                            <button type="button" class="ct_outline_btn ct_outline_orange"
+                                data-bs-dismiss="modal">Cancel</button>
+                            <button type="button ct_" (click)="onSubmitCommitted()"
+                                class="ct_custom_btm ct_border_radius_0 ct_btn_fit ct_news_ltr_btn ct_modal_submit">Submit</button>
+                            <button hidden type="button" class="btn btn-secondary" #closeModal
+                                data-bs-dismiss="modal">Close</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Committed_Price E -->
+
+<!-- approvel_cos modal S -->
+
+<div class="modal fade Committed_Price" id="approvel_cos" tabindex="-1" aria-labelledby="approvel_cosLabel"
+    aria-hidden="true">
+    <div class="modal-dialog modal-lg modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-body">
+                <div class="pt-5">
+                    <h4 class="mb-4 text-center"><strong>Add Approved CO</strong></h4>
+                    <form [formGroup]="approvedForm">
+                        <div class="ct_purchase_form">
+                            <div class="form-group mb-3 px-2">
+                                <label for="" class="mb-1">Paid to <span class="ct_required_star">*</span></label>
+                                <select formControlName="supplyValue" name="" id=""
+                                    class="ct_purchase_select ct_bg_grey_select">
+                                    <option selected value="0">Select Chain</option>
+                                    <option *ngFor="let option of dropdownOptionsApp;" [value]="option.id">
+                                        {{option.name}}</option>
+                                </select>
+                            </div>
+                            <div class="ct_multiple_purchase_line">
+                                <table #tableRef class="table mb-0">
+                                    <tr *ngFor="let row of approvedLines; let i = index">
+                                        <td class="px-2" style="width: 60%;">
+                                            <!-- Select Dropdown -->
+                                            <select id="dropdown{{i}}" class="ct_purchase_select"
+                                                [ngModelOptions]="{standalone: true}"
+                                                [(ngModel)]="row.selectedOptionApp">
+                                                <option selected value="0">Select Item</option>
+                                                <option *ngFor="let option of itemsDropdown" [ngValue]="option">{{
+                                                    option.item_name }}</option>
+                                            </select>
+                                        </td>
+                                        <td class="px-2">
+                                            <!-- Input Field for Price -->
+                                            <div class="position-relative">
+                                                <input id="inputField{{i}}" type="number"
+                                                    placeholder="Enter price here..." [(ngModel)]="row.inputPrice"
+                                                    class="ct_currency_input" [ngModelOptions]="{standalone: true}">
+                                                <span id="inputField{{i}}" class="ct_usd_icon">£</span>
+                                            </div>
+                                        </td>
+                                        <td class="px-2">
+                                            <!-- Remove Button -->
+                                            <i class="fa-solid fa-trash ct_trash" (click)="removeApprovedRow(i)"></i>
+                                        </td>
+                                    </tr>
+                                </table>
+                            </div>
+
+                            <div class="text-center">
+                                <p class="ct_orange_text">
+                                    <strong>
+                                        <button class="btndis" (click)="addApprovedRow()"><u>+ Add Line</u></button>
+                                    </strong>
+                                </p>
+                            </div>
+
+                            <div class="d-flex align-items-center gap-3 justify-content-between mb-4">
+                                <p class="mb-0"><strong>Total Amount</strong></p>
+                                <p class="mb-0" style="margin-right: 10px;"><strong>£ {{totalAmountApp}}</strong></p>
+                            </div>
+
+                            <div class="form-group mb-3">
+                                <label for="" class="ct_fs_16 mb-1">Memo</label>
+                                <textarea rows="3" formControlName="memo1" placeholder="Type the memo here...."
+                                    class="ct_text_area"></textarea>
+                                <div *ngIf="approvedForm.controls['memo1']?.invalid && approvedForm.controls['memo1']?.touched"
+                                    class="text-danger">
+                                    Please enter a memo.
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="ct_file_upload" class="ct_file_upload">
+                                    <input #exampleInputFile1 formControlName="sourceFile2"
+                                        (change)="handleApprovedFileInput($event)" type="file" id="ct_file_upload"
+                                        class="d-none">
+                                    <span><i class="fa-solid fa-paperclip"></i> Add Attachment</span>
+                                </label>
+
+                                <div *ngIf="approvedForm.controls['sourceFile2']?.invalid && approvedForm.controls['sourceFile2']?.touched"
+                                    class="text-danger">
+                                    Please choose a file.
+                                </div>
+
+                            </div>
+                            <div class="mt-4 d-flex align-items-center justify-content-between flex-wrap gap-2">
+                                <div class="d-flex align-items-center gap-3">
+                                    <img src="assets/img/file_doc.svg" alt="" class="ct_uploaded_img">
+                                    <div class="ct_file_name">
+                                        <h6>{{approvedfilename}}</h6>
+                                        <small>{{ approvedfilesize }}</small>
+                                    </div>
+                                </div>
+                                <div class="ct_green_check">
+                                    <i class="fa-solid fa-check"></i>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="modal-footer justify-content-center border-0 mt-4">
+                            <button type="button" class="ct_outline_btn ct_outline_orange"
+                                data-bs-dismiss="modal">Cancel</button>
+                            <button type="button ct_" (click)="onSubmitApproved()"
+                                class="ct_custom_btm ct_border_radius_0 ct_btn_fit ct_news_ltr_btn ct_modal_submit">Submit</button>
+                            <button hidden type="button" class="btn btn-secondary" #closeModal1
+                                data-bs-dismiss="modal">Close</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

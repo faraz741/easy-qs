@@ -1,0 +1,15 @@
+.ct_dashbaord_middle {
+    padding: 10px 30px;
+}
+
+.ct_project_table thead tr th:last-child {
+    text-align: left;
+  }
+
+  /* Sticky header */
+.table thead th {
+    position: sticky;
+    top: 0;
+    z-index: 1;
+    background-color: #E8DFDA; /* Background color for the sticky header */
+}

@@ -1,0 +1,396 @@
+<div class="ct_dashbaord_middle">
+    <div class="">
+        <div class="d-flex align-items-center justify-content-between ct_responsive_wrap">
+            <h4 class="mb-0 ct_fs_22">Incurred Cost</h4>
+            <div class="d-flex align-items-center gap-4">
+
+                <button class="ct_custom_btm ct_border_radius_0 ct_btn_fit ct_news_ltr_btn ct_add_item"
+                    data-bs-toggle="modal" data-bs-target="#ct_supplier_detail_invoice">Add Invoice</button>
+                <button class="ct_custom_btm ct_border_radius_0 ct_btn_fit ct_news_ltr_btn ct_add_item"
+                    data-bs-toggle="modal" data-bs-target="#ct_supplier_detail_timesheet">Add Timesheet</button>
+
+                <div class="position-relative ct_search_input">
+                    <input type="text" class="form-control ct_flex_1" placeholder="Search">
+                    <i class="fa-solid fa-magnifying-glass "></i>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+    <div class="table-responsive mt-3">
+        <table class="table ct_project_table ct_custom_table_main">
+            <thead>
+                <tr>
+                    <th>Incurred Cost ID</th>
+                    <th>Cost Type</th>
+                    <th>Date Raised</th>
+                    <th>Raised By</th>
+                    <th>Supplier Name</th>
+                    <th>Order Value</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor="let product of data | filter:searchQuery; let i = index">
+                    <td>{{ product.order_id }}</td>
+                    <td>{{ product.order_value }}</td>
+                    <td>{{ product.order_value }}</td>
+                    <td><a href="javascript:void(0)">{{ product.order_value }}</a></td>
+                    <td>{{ product.order_value }}</td>
+                    <td class="text-end">{{ product.order_value }}</td>
+                    <td class="d-flex align-items-center gap-3 justify-content-end ct_action_btns">
+                        <i class="fa-regular fa-eye" data-bs-toggle="modal" data-bs-target="#ct_order_view_invoice"
+                            style="cursor: pointer;"></i>
+
+                        <!-- <i class="fa-solid fa-pen"
+                            [attr.data-bs-target]="product.order_id === 1 ? '#ct_order_view_invoice' : (product.order_id === 2 ? '#ct_order_view_timesheet' : '')"
+                            style="cursor: pointer;">
+                        </i> -->
+
+                        <i class="fa-solid fa-pen" data-bs-toggle="modal" data-bs-target="#ct_order_edit_invoice"
+                            style="cursor: pointer;"></i>
+
+                        <!-- <i class="fa-solid fa-pen"
+                            [attr.data-bs-target]="product.order_id === 1 ? '#ct_order_edit_1' : (product.order_id === 2 ? '#ct_order_edit_2' : '')"
+                            style="cursor: pointer;">
+                        </i> -->
+
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<!-- Invoice -->
+<div class="modal fade Committed_Price" id="ct_supplier_detail_invoice" tabindex="-1"
+    aria-labelledby="ct_supplier_detailLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-body">
+                <div class="pt-5">
+                    <h4 class="mb-4 text-center"><strong>Add Invoice</strong></h4>
+                    <form [formGroup]="invoiceForm">
+                        <div class="ct_purchase_form">
+                            <div class="form-group mb-3 px-2">
+                                <label for="" class="mb-1">Paid to <span class="ct_required_star">*</span></label>
+                                <select formControlName="supplyValue" name="" id=""
+                                    class="ct_purchase_select ct_bg_grey_select">
+                                    <option selected value="0">Select Chain</option>
+                                    <option *ngFor="let option of dropdownOptionsInvoice;" [value]="option.id">
+                                        {{option.name}}</option>
+                                </select>
+                            </div>
+                            <div class="ct_multiple_purchase_line   ">
+                                <table class="table">
+                                    <tr *ngFor="let row of invoiceLine; let i = index">
+                                        <td class="px-2" style="width: 60%;">
+                                            <!-- Select Dropdown -->
+                                            <select id="dropdown{{i}}" class="ct_purchase_select"
+                                                [ngModelOptions]="{standalone: true}" [(ngModel)]="row.selectedOption">
+                                                <option selected value="0">Select Item</option>
+                                                <option *ngFor="let option of itemsDropdown" [ngValue]="option">{{
+                                                    option.item_name }}</option>
+                                            </select>
+                                            <!-- <div *ngIf="committedForm.controls['selectedItem'].invalid && committedForm.controls['selectedItem']?.touched"
+                                                class="text-danger">
+                                                Please select an item.
+                                            </div> -->
+                                        </td>
+                                        <td class="px-2">
+                                            <div class="position-relative">
+                                                <input type="text" value="2,155.00" class="ct_currency_input">
+                                                <span class="ct_usd_icon">£</span>
+                                            </div>
+                                        </td>
+                                        <td class="px-2">
+                                            <i class="fa-solid fa-trash ct_trash" (click)="removeInvoiceRow(i)"></i>
+                                        </td>
+                                    </tr>
+                                </table>
+                            </div>
+                            <div class="text-center">
+                                <p class="ct_orange_text">
+                                    <strong>
+                                        <button class="btndis" (click)="addInvoiceRow()"><u>+ Add Line</u></button>
+                                    </strong>
+                                </p>
+                            </div>
+
+                            <div class="d-flex align-items-center gap-3 justify-content-between mb-4">
+                                <p class="mb-0"><strong>Total Amount</strong></p>
+                                <p class="mb-0"><strong>£ {{totalAmountInvoice}}</strong></p>
+                            </div>
+
+                            <div class="d-flex align-items-center gap-3 justify-content-between mb-4">
+                                <p class="mb-0"><strong>Payment Due</strong></p>
+
+                                <div class="form-group">
+                                    <input type="date" class="form-control" formControlName="paymentDate"
+                                        style="width: 160px;">
+                                </div>
+                            </div>
+
+                            <div class="form-group mb-3">
+                                <label for="" class="ct_fs_16 mb-1">Memo</label>
+                                <textarea rows="3" placeholder="Type the memo here...." class="ct_text_area"></textarea>
+                            </div>
+                            <div class="form-group">
+                                <label for="ct_file_upload1" class="ct_file_upload">
+                                    <input type="file" id="ct_file_upload1" class="d-none">
+                                    <span><i class="fa-solid fa-paperclip"></i> Add Attachment</span>
+                                </label>
+                            </div>
+                        </div>
+
+                        <div class="modal-footer justify-content-center border-0 mt-4">
+                            <button type="button" class="ct_outline_btn ct_outline_orange"
+                                data-bs-dismiss="modal">Cancel</button>
+                            <button type="button ct_"
+                                class="ct_custom_btm ct_border_radius_0 ct_btn_fit ct_news_ltr_btn ct_modal_submit">Add
+                                Invoice</button>
+                            <button hidden type="button" class="btn btn-secondary" #closeModal
+                                data-bs-dismiss="modal">Close</button>
+                        </div>
+
+                    </form>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+<!-- Timesheet -->
+<div class="modal fade Committed_Price" id="ct_supplier_detail_timesheet" tabindex="-1"
+    aria-labelledby="ct_supplier_detailLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-body">
+                <div class="pt-5">
+                    <h4 class="mb-4 text-center"><strong>Add Timesheet</strong></h4>
+                    <form [formGroup]="timesheetForm">
+                        <div class="ct_purchase_form">
+                            <div class="form-group mb-3 px-2">
+                                <label for="" class="mb-1">Paid to <span class="ct_required_star">*</span></label>
+                                <select formControlName="supplyValue" name="" id=""
+                                    class="ct_purchase_select ct_bg_grey_select">
+                                    <option selected value="0">Select Chain</option>
+                                    <option *ngFor="let option of dropdownOptionsTimesheet;" [value]="option.id">
+                                        {{option.name}}</option>
+                                </select>
+                            </div>
+                            <div class="ct_multiple_purchase_line   ">
+                                <table class="table">
+                                    <tr *ngFor="let row of timesheetLine; let i = index">
+                                        <td class="px-2" style="width: 60%;">
+                                            <!-- Select Dropdown -->
+                                            <select id="dropdown{{i}}" class="ct_purchase_select"
+                                                [ngModelOptions]="{standalone: true}" [(ngModel)]="row.selectedOption">
+                                                <option selected value="0">Select Item</option>
+                                                <option *ngFor="let option of itemsDropdown" [ngValue]="option">{{
+                                                    option.item_name }}</option>
+                                            </select>
+                                            <!-- <div *ngIf="committedForm.controls['selectedItem'].invalid && committedForm.controls['selectedItem']?.touched"
+                                                class="text-danger">
+                                                Please select an item.
+                                            </div> -->
+                                        </td>
+                                        <td class="px-2">
+                                            <div class="position-relative">
+                                                <input type="text" value="2,155.00" class="ct_currency_input">
+                                                <span class="ct_usd_icon">£</span>
+                                            </div>
+                                        </td>
+                                        <td class="px-2">
+                                            <i class="fa-solid fa-trash ct_trash" (click)="removeTimesheetRow(i)"></i>
+                                        </td>
+                                    </tr>
+                                </table>
+                            </div>
+                            <div class="text-center">
+                                <p class="ct_orange_text">
+                                    <strong>
+                                        <button class="btndis" (click)="addTimesheetRow()"><u>+ Add Line</u></button>
+                                    </strong>
+                                </p>
+                            </div>
+                            <div class="d-flex align-items-center gap-3 justify-content-between mb-4">
+                                <p class="mb-0"><strong>Total Amount</strong></p>
+                                <p class="mb-0"><strong>£ {{totalAmountTimesheet}}</strong></p>
+                            </div>
+
+                            <div class="d-flex align-items-center gap-3 justify-content-between mb-4">
+                                <p class="mb-0"><strong>Payment Due</strong></p>
+
+                                <div class="form-group">
+                                    <input type="date" class="form-control" style="width: 160px;">
+                                </div>
+                            </div>
+
+                            <div class="form-group mb-3">
+                                <label for="" class="ct_fs_16 mb-1">Memo</label>
+                                <textarea rows="3" placeholder="Type the memo here...." class="ct_text_area"></textarea>
+                            </div>
+                            <div class="form-group">
+                                <label for="ct_file_upload1" class="ct_file_upload">
+                                    <input type="file" id="ct_file_upload1" class="d-none">
+                                    <span><i class="fa-solid fa-paperclip"></i> Add Attachment</span>
+                                </label>
+                            </div>
+                        </div>
+
+                        <div class="modal-footer justify-content-center border-0 mt-4">
+                            <button type="button" class="ct_outline_btn ct_outline_orange"
+                                data-bs-dismiss="modal">Cancel</button>
+                            <button type="button ct_"
+                                class="ct_custom_btm ct_border_radius_0 ct_btn_fit ct_news_ltr_btn ct_modal_submit">Add
+                                Timesheet</button>
+                            <button hidden type="button" class="btn btn-secondary" #closeModal2
+                                data-bs-dismiss="modal">Close</button>
+                        </div>
+
+                    </form>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+
+<!-- Edit Invoice -->
+<div class="modal fade Committed_Price" id="ct_order_edit_invoice" tabindex="-1" aria-labelledby="ct_order_editLabel"
+    aria-hidden="true">
+    <app-edit-invoice></app-edit-invoice>
+</div>
+
+<!-- Edit Timesheet -->
+<div class="modal fade Committed_Price" id="ct_order_edit_timesheet" tabindex="-1" aria-labelledby="ct_order_editLabel"
+    aria-hidden="true">
+    <app-edit-timesheet></app-edit-timesheet>
+</div>
+
+
+<!-- View Invoice -->
+<div class="modal fade Committed_Price" id="ct_order_view_invoice" tabindex="-1" aria-labelledby="ct_order_viewLabel"
+    aria-hidden="true">
+    <div class="modal-dialog modal-md modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-body">
+                <div class="pt-5">
+                    <h4 class="mb-4 text-center"><strong>Invoice</strong></h4>
+                    <form action="">
+                        <div class="ct_purchase_form">
+                            <div class="form-group mb-3 px-2">
+                                <label for="" class="mb-1">Paid to <span class="ct_required_star">*</span></label>
+                                <select name="" id="" class="ct_purchase_select ct_bg_grey_select">
+                                    <option *ngFor="let option of dropdownOptionsInvoice"
+                                        [selected]="supplyId == option.id">{{option.name}}</option>
+                                </select>
+                            </div>
+                            <div class="ct_multiple_purchase_line">
+                                <table class="table" *ngFor="let order of invoiceLine; let i = index">
+                                    <tr>
+                                        <td class="px-2 pt-15 py-0">
+                                            <p class="mb-0 py-0">{{order.item_name}}</p>
+                                        </td>
+
+                                        <td class="px-2 pt-15 text-end py-0">
+                                            <p class="mb-0 py-0"><span class="me-3 pe-5">£</span>{{order.commited_price
+                                                | number:'1.2-2'}}</p>
+                                        </td>
+                                    </tr>
+                                </table>
+                            </div>
+
+                            <div class="d-flex align-items-center gap-3 justify-content-between mb-4">
+                                <p class="mb-0"><strong>Total Amount</strong></p>
+                                <p class="mb-0" style="margin-right: 10px;"><strong>£ {{totalAmountInvoice}}</strong>
+                                </p>
+                            </div>
+
+                            <div class="d-flex align-items-center gap-3">
+                                <img src="assets/img/file_doc.svg" alt="" class="ct_uploaded_img">
+                                <div class="ct_file_name">
+                                    <h6>Other file.png</h6>
+                                    <small>658 KB</small>
+                                </div>
+                            </div>
+
+                        </div>
+
+                    </form>
+                </div>
+            </div>
+            <div class="modal-footer justify-content-center border-0 mt-4">
+                <button type="button" class="ct_outline_btn ct_outline_orange" data-bs-dismiss="modal">Cancel</button>
+                <button type="button ct_"
+                    class="ct_custom_btm ct_border_radius_0 ct_btn_fit ct_news_ltr_btn ct_modal_submit"
+                    data-bs-dismiss="modal">Submit</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- View Timesheet -->
+<div class="modal fade Committed_Price" id="ct_order_view_timesheet" tabindex="-1" aria-labelledby="ct_order_viewLabel"
+    aria-hidden="true">
+    <div class="modal-dialog modal-md modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-body">
+                <div class="pt-5">
+                    <h4 class="mb-4 text-center"><strong>Timesheet</strong></h4>
+                    <form action="">
+                        <div class="ct_purchase_form">
+                            <div class="form-group mb-3 px-2">
+                                <label for="" class="mb-1">Paid to <span class="ct_required_star">*</span></label>
+                                <select name="" id="" class="ct_purchase_select ct_bg_grey_select">
+                                    <option *ngFor="let option of dropdownOptionsTimesheet"
+                                        [selected]="supplyId == option.id">{{option.name}}</option>
+                                </select>
+                            </div>
+                            <div class="ct_multiple_purchase_line">
+                                <table class="table" *ngFor="let order of timesheetLine; let i = index">
+                                    <tr>
+                                        <td class="px-2 pt-15 py-0">
+                                            <p class="mb-0 py-0">{{order.item_name}}</p>
+                                        </td>
+
+                                        <td class="px-2 pt-15 text-end py-0">
+                                            <p class="mb-0 py-0"><span class="me-3 pe-5">£</span>{{order.commited_price
+                                                | number:'1.2-2'}}</p>
+                                        </td>
+                                    </tr>
+                                </table>
+                            </div>
+
+                            <div class="d-flex align-items-center gap-3 justify-content-between mb-4">
+                                <p class="mb-0"><strong>Total Amount</strong></p>
+                                <p class="mb-0" style="margin-right: 10px;"><strong>£ {{totalAmountTimesheet}}</strong>
+                                </p>
+                            </div>
+
+                            <div class="d-flex align-items-center gap-3">
+                                <img src="assets/img/file_doc.svg" alt="" class="ct_uploaded_img">
+                                <div class="ct_file_name">
+                                    <h6>Other file.png</h6>
+                                    <small>658 KB</small>
+                                </div>
+                            </div>
+
+                        </div>
+
+                    </form>
+                </div>
+            </div>
+            <div class="modal-footer justify-content-center border-0 mt-4">
+                <button type="button" class="ct_outline_btn ct_outline_orange" data-bs-dismiss="modal">Cancel</button>
+                <button type="button ct_"
+                    class="ct_custom_btm ct_border_radius_0 ct_btn_fit ct_news_ltr_btn ct_modal_submit"
+                    data-bs-dismiss="modal">Submit</button>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,12 @@
+/* .ct_currency_input {
+    width: 130px; 
+  } */
+
+  .ct_project_table thead tr th:last-child {
+    text-align: left;
+  }
+  .ct_input_indent_0 {
+    text-indent: 0px;
+    text-align: center;
+    height: 38px;
+}

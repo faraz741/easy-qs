@@ -1,0 +1,20 @@
+<div class="ct_dashboard_head">
+  <div class="d-flex align-items-center gap-4 flex-wrap">
+    <a routerLink="/core/admin/all-project" class="ct_white_btn ct_back_project_btn">
+      <i class="fa-solid fa-angle-left"></i> Back to All Project
+    </a>
+    <div class="d-flex align-items-center gap-3">
+      <img src="assets/img/evergreen.svg" alt="img" />
+      <h5 class="mb-0 ct_mob_d_none">{{projectName}}</h5>
+    </div>
+  </div>
+  <div>
+    <button class="ct_logout_btn ct_white_btn" (click)="logout()">
+      <div class="mb-0 ct_user_name_info">
+        <h6>{{userName}}</h6>
+        <p class="mb-0">Prodcut manager</p>
+      </div>
+      <i class="fa-solid fa-power-off"></i>
+    </button>
+  </div>
+</div>

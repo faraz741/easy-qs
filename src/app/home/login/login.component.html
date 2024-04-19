@@ -1,0 +1,107 @@
+<body>
+  <section class="ct_login_main_div">
+    <div class="container-fluid px-0">
+      <div class="ct_login_left_bg">
+        <div class="row align-items-center">
+          <div class="col-lg-6 mb-4 mb-md-0">
+            <div class="ct_left_login_img">
+              <img src="assets/img/Business Plan-amico 1.svg" alt="img">
+            </div>
+          </div>
+          <div class="col-lg-4 offset-0 offset-lg-1  mb-4 mb-lg-0">
+            <div class="ct_login_right_form w-60 mx-auto mx-lg-0">
+
+              <div class="ct_login_logo mx-auto d-block text-center mb-4">
+                <img src="assets/img/Logo.png" alt="">
+              </div>
+              <div class="mb-5 text-center">
+                <h4 class="ct_fs_28 mb-2">Login to your Account</h4>
+                <p class="mb-0">See what is going on with your business</p>
+              </div>
+              <form [formGroup]="loginForm" (ngSubmit)="loginAndFetchData()">
+                <div class="ct_input-group mb-4">
+                  <input required="" type="email" name="text" autocomplete="off" formControlName="email"
+                    class="ct_input">
+                  <label class="ct_user-label">Email <span class="ct_required_star">*</span></label>
+                  <div *ngIf="loginForm.controls['email'].invalid && loginForm.controls['email'].touched"
+                    class="error-message">
+                    <div *ngIf="loginForm.controls['email'].errors?.['required']">Email is required.</div>
+                    <div
+                      *ngIf="loginForm.controls['email'].errors?.['email'] && !loginForm.controls['email'].errors?.['required']">
+                      Invalid email format.</div>
+                  </div>
+                </div>
+                <!-- <div class="ct_input-group mb-4 position-relative">
+                  <input required="" type="password" name="text" autocomplete="off" formControlName="password" class="ct_input">
+                  <label class="ct_user-label">Password <span class="ct_required_star">*</span></label>
+                  <i class="fa-regular fa-eye ct_hide_pass_wye"></i>
+                  <div *ngIf="loginForm.controls['password'].invalid && loginForm.controls['password'].touched" class="error-message">
+                    <div *ngIf="loginForm.controls['password'].errors?.['required']">Password is required.</div>
+                  </div>
+                </div> -->
+                <div class="ct_input-group mb-4 position-relative">
+                  <input required type="{{ isPasswordVisible ? 'text' : 'password' }}" name="text" autocomplete="off"
+                    formControlName="password" class="ct_input">
+                  <label class="ct_user-label">Password <span class="ct_required_star">*</span></label>
+                  <i class="fa-regular ct_hide_pass_wye" [ngClass]="isPasswordVisible ? 'fa-eye' : 'fa-eye-slash' "
+                    (click)="togglePasswordVisibility()"></i>
+                  <div *ngIf="loginForm.controls['password'].invalid && loginForm.controls['password'].touched"
+                    class="error-message">
+                    <div *ngIf="loginForm.controls['password'].errors?.['required']">Password is required.</div>
+                  </div>
+                </div>
+
+
+                <div class="ct_remember_text">
+                  <!-- <div class="d-flex align-items-center gap-2">
+                                   <input type="checkbox" class="ct_checkbox" id="remember">
+                                  <label for="remember"> Remember Me </label>
+                                </div> -->
+                  <div class="ct_checkbox_main">
+                    <div>
+                      <input checked="" type="checkbox" id="ct_checkbox_cbx" class="ct_hidden-xs-up">
+                      <label for="ct_checkbox_cbx" class="ct_checkbox_cbx"></label>
+                    </div>
+                    <p class="mb-0">Remember me</p>
+                  </div>
+                  <div class="ct_forgot_link">
+                    <a routerLink="/home/forgot-password">Forgot Password?</a>
+                  </div>
+                </div>
+
+                <!-- <div class="mt-4 d-block">
+                  <button type="submit" class="ct_custom_btm">
+                    <span class="circle1"></span>
+                    <span class="circle2"></span>
+                    <span class="circle3"></span>
+                    <span class="circle4"></span>
+                    <span class="circle5"></span>
+                    <span class="text">Login</span>
+                  </button>
+                </div> -->
+                <div class="mt-4 d-block">
+                  <button type="submit" class="ct_custom_btm" [disabled]="loading">
+                    <span class="circle1"></span>
+                    <span class="circle2"></span>
+                    <span class="circle3"></span>
+                    <span class="circle4"></span>
+                    <span class="circle5"></span>
+                    <span class="text" *ngIf="!loading">Login</span>
+                    <span class="text" *ngIf="loading">Loading...</span>
+                  </button>
+                </div>
+                <p class="mb-0 mt-3 ct_login_btm">Not Registered Yet? <a routerLink="/home/signup">Create an account</a>
+                </p>
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+</body>
+
+<div style="text-align: center;">
+  <ngx-loading [show]="loading"
+    [config]="{ animationType: 'circle-swish', primaryColour: '#007bff', backdropBorderRadius: '4px' }"></ngx-loading>
+</div>

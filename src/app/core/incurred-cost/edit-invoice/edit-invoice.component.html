@@ -1,0 +1,82 @@
+<div class="modal-dialog modal-lg modal-dialog-centered">
+    <div class="modal-content">
+        <div class="modal-body">
+            <div class="pt-5">
+                <h4 class="mb-4 text-center"><strong>Edit Invoice</strong></h4>
+                <form [formGroup]="invoiceForm">
+                    <div class="ct_purchase_form">
+                        <div class="form-group mb-3 px-2">
+                            <label for="" class="mb-1">Paid to <span class="ct_required_star">*</span></label>
+                            <select name="" id="" class="ct_purchase_select ct_bg_grey_select">
+                                <option *ngFor="let option of dropdownOptionsInvoice" [selected]="supplyId==option.id">
+                                    {{option.name}}</option>
+                            </select>
+                        </div>
+                        <div class="ct_multiple_purchase_line   ">
+                            <table class="table">
+                                <tr *ngFor="let row of invoiceLine; let i = index">
+                                    <td class="px-2" style="width: 60%;">
+                                        <!-- Select Dropdown -->
+                                        <select id="dropdown{{i}}" class="ct_purchase_select"
+                                            [ngModelOptions]="{standalone: true}" [(ngModel)]="row.item_name">
+                                            <option selected value="0">Select Item</option>
+                                            <option *ngFor="let option of itemsDropdown"
+                                                [selected]="itemName == option.item_name" [ngValue]="option.item_name">
+                                                {{
+                                                option.item_name }}</option>
+                                        </select>
+                                    </td>
+                                    <td class="px-2">
+                                        <div class="position-relative">
+                                            <input id="inputField{{i}}" type="text" placeholder="Enter price here..."
+                                                [(ngModel)]="row.commited_price" class="ct_currency_input"
+                                                [ngModelOptions]="{standalone: true}">
+                                            <span id="inputField{{i}}" class="ct_usd_icon">£</span>
+
+                                        </div>
+                                    </td>
+                                    <td class="px-2">
+                                        <i class="fa-solid fa-trash ct_trash" (click)="removeInvoiceRow(i)"></i>
+                                    </td>
+                                </tr>
+                            </table>
+                        </div>
+
+                        <div class="d-flex align-items-center gap-3 justify-content-between mb-4">
+                            <p class="mb-0"><strong>Total Amount</strong></p>
+                            <p class="mb-0"><strong>£ {{totalAmount}}</strong></p>
+                        </div>
+
+                        <div class="form-group mb-3">
+                            <label for="" class="ct_fs_16 mb-1">Memo</label>
+                            <textarea rows="3" formControlName="memo" placeholder="Type the memo here...."
+                                class="ct_text_area"></textarea>
+                            <div *ngIf="invoiceForm.controls['memo']?.invalid && invoiceForm.controls['memo']?.touched"
+                                class="text-danger">
+                                Please enter a memo.
+                            </div>
+                        </div>
+
+                        <!-- <div class="form-group">
+                            <label for="ct_file_upload1" class="ct_file_upload">
+                                <input type="file" id="ct_file_upload1" class="d-none">
+                                <span><i class="fa-solid fa-paperclip"></i> Add Attachment</span>
+                            </label>
+                        </div> -->
+                    </div>
+
+                    <div class="modal-footer justify-content-center border-0 mt-4">
+                        <button type="button" class="ct_outline_btn ct_outline_orange"
+                            data-bs-dismiss="modal">Cancel</button>
+                        <button type="button ct_"
+                            class="ct_custom_btm ct_border_radius_0 ct_btn_fit ct_news_ltr_btn ct_modal_submit">Update
+                            And
+                            Submit</button>
+                    </div>
+
+                </form>
+            </div>
+        </div>
+
+    </div>
+</div>
