@@ -11,7 +11,8 @@ export class CoreService {
   userDet: any = '';
   userName: any = '';
 
-  apiUrl = 'http://44.217.97.124:4000'
+  // apiUrl = 'http://44.217.97.124:4000'
+  apiUrl = 'http://localhost:4000'
 
   private totalCost: number = 0;
   private totalContractVal: number = 0;

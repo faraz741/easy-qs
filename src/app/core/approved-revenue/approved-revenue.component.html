@@ -21,8 +21,8 @@
             </thead>
             <tbody>
                 <tr *ngFor="let product of data | filter:searchQuery; let i = index">
-                    <td class="text-center">{{ product.cost_type }}</td>
-                    <td>{{ product.date_raised | date:'yyyy-MM-dd' }}</td>
+                    <td class="text-center">{{ product.order_id }}</td>
+                    <td>{{ product.payment_date | date:'yyyy-MM-dd' }}</td>
                     <td>{{ product.order_value }}</td>
                     <td class="d-flex align-items-center gap-3 justify-content-end ct_action_btns">
                         <i class="fa-regular fa-eye" data-bs-toggle="modal" data-bs-target="#ct_order_view"

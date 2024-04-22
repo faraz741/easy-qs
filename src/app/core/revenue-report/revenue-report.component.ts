@@ -116,87 +116,87 @@ export class RevenueReportComponent {
       return
     };
 
-    // console.log(this.committedLines);
-    this.contractItems = (this.committedLines).filter((items: any) => items.selectedOption.is_contract_var == "C");
-    this.variationItems = (this.committedLines).filter((items: any) => items.selectedOption.is_contract_var == "V");
-// console.log(this.contractItems);
+    console.log(this.committedLines);
 
- 
-if(this.contractItems.length > 0){
-  const formDataContact = new FormData();
-  let contactRowData: {  ItemName: any, contractValue: any,revenueToDate:any }[] = [];
-
-  this.contractItems.forEach((row, index) => {
-    contactRowData.push({
-      // itemsId: row.selectedOption?.id,
-      ItemName: row.selectedOption?.item_name,
-      contractValue: 0,
-      revenueToDate : row.inputPrice
-    });
-  });
-  const rowDataString = JSON.stringify(contactRowData);
-  formDataContact.append('items', rowDataString);
-  formDataContact.append('project_id', this.projectId);
-  formDataContact.append('memo', this.revenueForm.value.memo);
-  formDataContact.append('payment_date', this.revenueForm.value.paymentDate);
+    // this.contractItems = (this.committedLines).filter((items: any) => items.selectedOption.is_contract_var == "C");
+    // this.variationItems = (this.committedLines).filter((items: any) => items.selectedOption.is_contract_var == "V");
+    // console.log(this.contractItems);
 
 
-  this.service.postAPI('/revenue/addContractWorks',formDataContact).subscribe({
-    next: (resp) => {
-      if (resp.success === true) {
-        this.toastr.success('Request added successfully!');
-        this.closeModal.nativeElement.click();
-        this.getAllItems()
-        // this.getItemData()
-      } else {
-        this.toastr.warning('Please check input fields.');
-      }
-    },
-    error: (Error) => {
-      this.toastr.warning('Something went wrong.');
-      console.log(Error.message)
+    if (this.committedLines.length > 0) {
+      const formDataContact = new FormData();
+      let contactRowData: any[] = [];
+
+      this.committedLines.forEach((row, index) => {
+        contactRowData.push({
+          // itemsId: row.selectedOption?.id,
+          item_id: row.selectedOption?.id,
+          revenue_price: row.inputPrice
+        });
+      });
+      const rowDataString = JSON.stringify(contactRowData);
+      formDataContact.append('items', rowDataString);
+      formDataContact.append('project_id', this.projectId);
+      formDataContact.append('memo', this.revenueForm.value.memo);
+      formDataContact.append('payment_date', this.revenueForm.value.paymentDate);
+
+
+      this.service.postAPI('/revenue/addRevenueOrder', formDataContact).subscribe({
+        next: (resp) => {
+          if (resp.success === true) {
+            this.toastr.success('Request added successfully!');
+            this.closeModal.nativeElement.click();
+            this.getAllItems()
+            // this.getItemData()
+          } else {
+            this.toastr.warning('Please check input fields.');
+          }
+        },
+        error: (Error) => {
+          this.toastr.warning('Something went wrong.');
+          console.log(Error.message)
+        }
+      })
     }
-  })
-}
 
 
-if(this.variationItems.length > 0){
-  const formDataVaraition = new FormData();
-  let contactRowData: {  ItemName: any; contractValue: any; revenueToDate:any }[] = [];
+    // if(this.variationItems.length > 0){
+    //   const formDataVaraition = new FormData();
+    //   let contactRowData: {  ItemName: any; contractValue: any; revenueToDate:any }[] = [];
 
-  this.variationItems.forEach((row, index) => {
-    contactRowData.push({
-      // itemsId: row.selectedOption?.id,
-      ItemName: row.selectedOption?.item_name,
-      contractValue: 0,
-      revenueToDate : row.inputPrice
-    });
-  });
-  const rowDataString = JSON.stringify(contactRowData);
-  console.log(rowDataString);
-  formDataVaraition.append('items', rowDataString);
-  formDataVaraition.append('project_id', this.projectId);
-  formDataVaraition.append('memo', this.revenueForm.value.memo);
-  formDataVaraition.append('payment_date', this.revenueForm.value.paymentDate);
+    //   this.variationItems.forEach((row, index) => {
+    //     contactRowData.push({
+    //       // itemsId: row.selectedOption?.id,
+    //       ItemName: row.selectedOption?.item_name,
+    //       contractValue: 0,
+    //       revenueToDate : row.inputPrice
+    //     });
+    //   });
+    //   const rowDataString = JSON.stringify(contactRowData);
+    //   console.log(rowDataString);
+    //   formDataVaraition.append('items', rowDataString);
+    //   formDataVaraition.append('project_id', this.projectId);
+    //   formDataVaraition.append('memo', this.revenueForm.value.memo);
+    //   formDataVaraition.append('payment_date', this.revenueForm.value.paymentDate);
 
 
-  this.service.postAPI('/revenue/addVariation',formDataVaraition).subscribe({
-    next: (resp) => {
-      if (resp.success === true) {
-        this.toastr.success('Request added successfully!');
-        this.closeModal.nativeElement.click();
-        this.getAllItems()
-        // this.getItemData()
-      } else {
-        this.toastr.warning('Please check input fields.');
-      }
-    },
-    error: (Error) => {
-      this.toastr.warning('Something went wrong.');
-      console.log(Error.message)
-    }
-  })
-}
+    //   this.service.postAPI('/revenue/addVariation',formDataVaraition).subscribe({
+    //     next: (resp) => {
+    //       if (resp.success === true) {
+    //         this.toastr.success('Request added successfully!');
+    //         this.closeModal.nativeElement.click();
+    //         this.getAllItems()
+    //         // this.getItemData()
+    //       } else {
+    //         this.toastr.warning('Please check input fields.');
+    //       }
+    //     },
+    //     error: (Error) => {
+    //       this.toastr.warning('Something went wrong.');
+    //       console.log(Error.message)
+    //     }
+    //   })
+    // }
   };
 
   // getContractData() {
